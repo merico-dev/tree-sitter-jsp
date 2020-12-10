@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "tree_sitter_vue_binding",
+      "target_name": "tree_sitter_jsp_binding",
       "include_dirs": [
         "<!(node -e \"require('nan')\")",
         "src"

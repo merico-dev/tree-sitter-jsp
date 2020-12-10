@@ -1,5 +1,5 @@
 {
-  "name": "vue",
+  "name": "jsp",
   "rules": {
     "component": {
       "type": "REPEAT",
@@ -9,6 +9,10 @@
           {
             "type": "SYMBOL",
             "name": "comment"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "jsp"
           },
           {
             "type": "SYMBOL",
@@ -25,6 +29,10 @@
           {
             "type": "SYMBOL",
             "name": "style_element"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "doc_type"
           }
         ]
       }
@@ -35,6 +43,10 @@
         {
           "type": "SYMBOL",
           "name": "comment"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "jsp"
         },
         {
           "type": "SYMBOL",
@@ -63,6 +75,23 @@
         {
           "type": "SYMBOL",
           "name": "erroneous_end_tag"
+        }
+      ]
+    },
+    "doc_type": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "STRING",
+          "value": "!"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "text"
         }
       ]
     },
@@ -459,7 +488,7 @@
     },
     "attribute_name": {
       "type": "PATTERN",
-      "value": "[^<>\"'=\\/\\s]+"
+      "value": "[^<>\"'=/\\s]+"
     },
     "attribute_value": {
       "type": "PATTERN",
@@ -705,7 +734,7 @@
         "value": 1,
         "content": {
           "type": "PATTERN",
-          "value": "v-[^<>'\"=\\/\\s:.]+"
+          "value": "v-[^<>'\"=/\\s:.]+"
         }
       }
     },
@@ -737,7 +766,7 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[^<>\"'\\/=\\s.]+"
+        "value": "[^<>\"'/=\\s.]+"
       }
     },
     "directive_dynamic_argument": {
@@ -779,7 +808,7 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[^<>\"'\\/=\\s\\]]+"
+        "value": "[^<>\"'/=\\s\\]]+"
       }
     },
     "directive_modifiers": {
@@ -809,7 +838,7 @@
       "type": "IMMEDIATE_TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "[^<>\"'\\/=\\s.]+"
+        "value": "[^<>\"'/=\\s.]+"
       }
     }
   },
@@ -821,6 +850,10 @@
   ],
   "conflicts": [],
   "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "jsp"
+    },
     {
       "type": "SYMBOL",
       "name": "_text_fragment"

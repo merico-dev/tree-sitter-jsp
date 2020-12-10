@@ -1,7 +1,8 @@
 module.exports = grammar({
-  name: "vue",
+  name: "jsp",
 
   externals: $ => [
+    $.jsp,
     $._text_fragment,
     $._interpolation_text,
     $._start_tag_name,
@@ -22,15 +23,18 @@ module.exports = grammar({
     component: $ => repeat(
       choice(
         $.comment,
+        $.jsp,
         $.element,
         $.template_element,
         $.script_element,
         $.style_element,
+        $.doc_type,
       ),
     ),
 
     _node: $ => choice(
       $.comment,
+      $.jsp,
       $.text,
       $.interpolation,
       $.element,
@@ -39,6 +43,8 @@ module.exports = grammar({
       $.style_element,
       $.erroneous_end_tag,
     ),
+
+    doc_type: $ => seq('<', '!', $.text),
 
     element: $ => choice(
       seq(

@@ -1,18 +1,18 @@
 {
-  "name": "tree-sitter-vue",
+  "name": "tree-sitter-jsp",
   "version": "0.1.0",
-  "description": "Vue grammar for tree-sitter",
+  "description": "JSP grammar for tree-sitter",
   "keywords": [
     "parser",
     "lexer"
   ],
   "main": "index.js",
-  "repository": "https://github.com/ikatyang/tree-sitter-vue",
-  "homepage": "https://github.com/ikatyang/tree-sitter-vue#readme",
+  "repository": "https://github.com/merico-dev/tree-sitter-jsp",
+  "homepage": "https://github.com/merico-dev/tree-sitter-jsp#readme",
   "author": {
-    "name": "Ika",
-    "email": "ikatyang@gmail.com",
-    "url": "https://github.com/ikatyang"
+    "name": "QinTianHuan",
+    "email": "tianhuan.qin@merico.dev",
+    "url": "https://meri.co"
   },
   "license": "MIT",
   "scripts": {
