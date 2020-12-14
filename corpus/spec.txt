@@ -513,3 +513,81 @@ Shorthands - v-on Shorthand (https://vuejs.org/v2/guide/syntax.html#v-on-Shortha
     (text)
     (end_tag
       (tag_name))))
+
+
+================================================================================
+JSP
+================================================================================
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>JSP - Hello World Tutorial - Programmer Gate</title>
+</head>
+
+<body>
+  <%= "Hello World!" %>
+
+  <% 
+  
+  int a = 10;
+  int b = c(a);
+  
+  %>
+</body>
+
+</html>
+
+--------------------------------------------------------------------------------
+
+(component
+  (jsp)
+  (doc_type
+    (text))
+  (element
+    (start_tag
+      (tag_name))
+    (text)
+    (element
+      (start_tag
+        (tag_name))
+      (text)
+      (element
+        (start_tag
+          (tag_name)
+          (attribute
+            (attribute_name)
+            (quoted_attribute_value
+              (attribute_value)))
+          (attribute
+            (attribute_name)
+            (quoted_attribute_value
+              (attribute_value))))
+        (text))
+      (element
+        (start_tag
+          (tag_name))
+        (text)
+        (end_tag
+          (tag_name)))
+      (text)
+      (end_tag
+        (tag_name)))
+    (text)
+    (element
+      (start_tag
+        (tag_name))
+      (text)
+      (jsp)
+      (text)
+      (jsp)
+      (text)
+      (end_tag
+        (tag_name)))
+    (text)
+    (end_tag
+      (tag_name))))
