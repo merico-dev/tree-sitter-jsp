@@ -17,15 +17,13 @@
   "license": "MIT",
   "scripts": {
     "test": "yarn tree-sitter test",
-    "prepack": "bash scripts/update-html-scanner.sh && yarn tree-sitter generate",
+    "prepack": "yarn tree-sitter generate",
     "release": "standard-version --commit-all",
     "tree-sitter": "./tree-sitter/target/release/tree-sitter"
   },
   "standard-version": {
     "preset": "angular",
-    "scripts": {
-      "postbump": "rm -r docs && node scripts/generate-playground.js && git add docs"
-    }
+    "scripts": {}
   },
   "dependencies": {
     "nan": "^2.14.0"
