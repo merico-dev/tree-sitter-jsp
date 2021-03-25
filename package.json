@@ -6,7 +6,7 @@
     "parser",
     "lexer"
   ],
-  "main": "index.js",
+  "main": "bindings/node",
   "repository": "https://github.com/merico-dev/tree-sitter-jsp",
   "homepage": "https://github.com/merico-dev/tree-sitter-jsp#readme",
   "author": {
