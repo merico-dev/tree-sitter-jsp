@@ -5,7 +5,7 @@
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-#define LANGUAGE_VERSION 12
+#define LANGUAGE_VERSION 13
 #define STATE_COUNT 193
 #define LARGE_STATE_COUNT 2
 #define SYMBOL_COUNT 62
@@ -14,6 +14,7 @@
 #define EXTERNAL_TOKEN_COUNT 13
 #define FIELD_COUNT 0
 #define MAX_ALIAS_SEQUENCE_LENGTH 6
+#define PRODUCTION_ID_COUNT 1
 
 enum {
   anon_sym_LT = 1,
@@ -460,7 +461,7 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
   },
 };
 
-static TSSymbol ts_alias_sequences[1][MAX_ALIAS_SEQUENCE_LENGTH] = {
+static TSSymbol ts_alias_sequences[PRODUCTION_ID_COUNT][MAX_ALIAS_SEQUENCE_LENGTH] = {
   [0] = {0},
 };
 
@@ -468,19 +469,32 @@ static uint16_t ts_non_terminal_alias_map[] = {
   0,
 };
 
-static inline bool sym_directive_name_character_set_1(int32_t lookahead) {
-  return
-    lookahead == 0 ||
-    lookahead == '\t' ||
-    lookahead == '\n' ||
-    lookahead == '\r' ||
-    lookahead == ' ' ||
-    lookahead == '"' ||
-    lookahead == '\'' ||
-    lookahead == '.' ||
-    lookahead == '/' ||
-    lookahead == ':' ||
-    ('<' <= lookahead && lookahead <= '>');
+static inline bool sym_directive_name_character_set_1(int32_t c) {
+  return (c < '"'
+    ? (c < '\r'
+      ? (c < '\t'
+        ? c == 0
+        : c <= '\n')
+      : (c <= '\r' || c == ' '))
+    : (c <= '"' || (c < ':'
+      ? (c < '.'
+        ? c == '\''
+        : c <= '/')
+      : (c <= ':' || (c >= '<' && c <= '>')))));
+}
+
+static inline bool sym_directive_dynamic_argument_value_character_set_1(int32_t c) {
+  return (c < '"'
+    ? (c < '\r'
+      ? (c < '\t'
+        ? c == 0
+        : c <= '\n')
+      : (c <= '\r' || c == ' '))
+    : (c <= '"' || (c < '<'
+      ? (c < '/'
+        ? c == '\''
+        : c <= '/')
+      : (c <= '>' || c == ']'))));
 }
 
 static bool ts_lex(TSLexer *lexer, TSStateId state) {
@@ -537,7 +551,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead != 0) ADVANCE(29);
       END_STATE();
     case 4:
-      if (lookahead == '-') ADVANCE(14);
+      if (lookahead == '-') ADVANCE(13);
       END_STATE();
     case 5:
       if (lookahead == '>') ADVANCE(20);
@@ -627,6 +641,9 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           lookahead != '<') ADVANCE(25);
       END_STATE();
     case 13:
+      if (!sym_directive_name_character_set_1(lookahead)) ADVANCE(36);
+      END_STATE();
+    case 14:
       if (lookahead != 0 &&
           lookahead != '\t' &&
           lookahead != '\n' &&
@@ -637,9 +654,6 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           lookahead != '.' &&
           lookahead != '/' &&
           (lookahead < '<' || '>' < lookahead)) ADVANCE(38);
-      END_STATE();
-    case 14:
-      if (!sym_directive_name_character_set_1(lookahead)) ADVANCE(36);
       END_STATE();
     case 15:
       if (eof) ADVANCE(16);
@@ -804,16 +818,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 41:
       ACCEPT_TOKEN(sym_directive_dynamic_argument_value);
-      if (lookahead != 0 &&
-          lookahead != '\t' &&
-          lookahead != '\n' &&
-          lookahead != '\r' &&
-          lookahead != ' ' &&
-          lookahead != '"' &&
-          lookahead != '\'' &&
-          lookahead != '/' &&
-          (lookahead < '<' || '>' < lookahead) &&
-          lookahead != ']') ADVANCE(41);
+      if (!sym_directive_dynamic_argument_value_character_set_1(lookahead)) ADVANCE(41);
       END_STATE();
     case 42:
       ACCEPT_TOKEN(anon_sym_DOT);
@@ -987,7 +992,7 @@ static TSLexMode ts_lex_modes[STATE_COUNT] = {
   [160] = {.lex_state = 2},
   [161] = {.lex_state = 0, .external_lex_state = 9},
   [162] = {.lex_state = 0, .external_lex_state = 11},
-  [163] = {.lex_state = 13},
+  [163] = {.lex_state = 14},
   [164] = {.lex_state = 7},
   [165] = {.lex_state = 0, .external_lex_state = 9},
   [166] = {.lex_state = 3},
@@ -996,7 +1001,7 @@ static TSLexMode ts_lex_modes[STATE_COUNT] = {
   [169] = {.lex_state = 0},
   [170] = {.lex_state = 0},
   [171] = {.lex_state = 0},
-  [172] = {.lex_state = 13},
+  [172] = {.lex_state = 14},
   [173] = {.lex_state = 0, .external_lex_state = 9},
   [174] = {.lex_state = 0},
   [175] = {.lex_state = 0, .external_lex_state = 12},
@@ -3607,22 +3612,23 @@ extern const TSLanguage *tree_sitter_jsp(void) {
     .symbol_count = SYMBOL_COUNT,
     .alias_count = ALIAS_COUNT,
     .token_count = TOKEN_COUNT,
-    .large_state_count = LARGE_STATE_COUNT,
-    .alias_map = ts_non_terminal_alias_map,
+    .external_token_count = EXTERNAL_TOKEN_COUNT,
     .state_count = STATE_COUNT,
-    .symbol_metadata = ts_symbol_metadata,
-    .parse_table = (const unsigned short *)ts_parse_table,
+    .large_state_count = LARGE_STATE_COUNT,
+    .production_id_count = PRODUCTION_ID_COUNT,
+    .field_count = FIELD_COUNT,
+    .max_alias_sequence_length = MAX_ALIAS_SEQUENCE_LENGTH,
+    .parse_table = (const uint16_t *)ts_parse_table,
     .small_parse_table = (const uint16_t *)ts_small_parse_table,
     .small_parse_table_map = (const uint32_t *)ts_small_parse_table_map,
     .parse_actions = ts_parse_actions,
-    .lex_modes = ts_lex_modes,
     .symbol_names = ts_symbol_names,
+    .symbol_metadata = ts_symbol_metadata,
     .public_symbol_map = ts_symbol_map,
+    .alias_map = ts_non_terminal_alias_map,
     .alias_sequences = (const TSSymbol *)ts_alias_sequences,
-    .field_count = FIELD_COUNT,
-    .max_alias_sequence_length = MAX_ALIAS_SEQUENCE_LENGTH,
+    .lex_modes = ts_lex_modes,
     .lex_fn = ts_lex,
-    .external_token_count = EXTERNAL_TOKEN_COUNT,
     .external_scanner = {
       (const bool *)ts_external_scanner_states,
       ts_external_scanner_symbol_map,
